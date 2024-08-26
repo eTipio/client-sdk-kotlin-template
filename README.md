@@ -1,13 +1,12 @@
-# Kotlin Client SDK Template for HTTP APIs
+# Kotlin HTTP API Client Template
 
-This project template demonstrates writing the client codes with Kotlin, and also tries to keep compatible from Java projects. 
+### A project template for writing an HTTP API client using Kotlin.
 
-To keep your codes compatible with calling from Java and Kotlin, check the Kotlin docs.
+## Compatibility
+To keep the SDK compatible with Java, refer to the following docs from Kotlin:
 * [Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html)
 * [Mixing Java and Kotlin in one project](https://kotlinlang.org/docs/mixing-java-kotlin-intellij.html)
 * [Using Java records in Kotlin](https://kotlinlang.org/docs/jvm-records.html)
-
-Check the existing [Client SDK for Java Template](https://github.com/eTipio/client-sdk-template) for more details of build a client SDK for HTTP APIs.
 
 License
 --------
