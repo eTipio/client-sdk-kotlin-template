@@ -34,3 +34,5 @@ build
 
 # IDEA project-specific directory
 .idea
+
+!gradle/wrapper/gradle-wrapper.jar
