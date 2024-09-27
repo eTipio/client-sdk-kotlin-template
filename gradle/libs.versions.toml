@@ -5,7 +5,7 @@
 okhttp = "5.0.0-alpha.14"
 wiremock = "3.9.1"
 junit-jupiter = "5.11.0"
-jackson = "2.17.2"
+jackson = "2.18.0"
 gson = "2.11.0"
 yasson = "3.0.4"
 kotlin = "2.0.20"
