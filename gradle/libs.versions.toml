@@ -3,7 +3,7 @@
 
 [versions]
 okhttp = "5.0.0-alpha.14"
-wiremock = "3.9.1"
+wiremock = "3.9.2"
 junit-jupiter = "5.11.0"
 jackson = "2.17.2"
 gson = "2.11.0"
