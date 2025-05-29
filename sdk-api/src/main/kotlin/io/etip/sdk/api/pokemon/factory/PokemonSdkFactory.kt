@@ -8,7 +8,7 @@ import io.etip.sdk.core.HttpClientFactory
 
 object PokemonSdkFactory {
     fun create(config: PokemonClientConfig): PokemonApiService {
-        val client = HttpClientFactory().create()
+        val client = HttpClientFactory.create()
         val baseHttpClient = BaseHttpClient(client, config.baseUrl)
         return DefaultPokemonApiService(config, baseHttpClient)
     }

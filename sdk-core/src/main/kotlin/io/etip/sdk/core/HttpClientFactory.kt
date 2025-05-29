@@ -14,7 +14,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-class HttpClientFactory {
+object HttpClientFactory {
     fun create(): HttpClient {
         return HttpClient(CIO) {
             install(ContentNegotiation) {
