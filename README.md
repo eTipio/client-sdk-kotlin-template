@@ -14,7 +14,7 @@ A modular, extensible, and reusable SDK template built with **Kotlin** and **Kto
 
 ## 📁 Structure Overview
 
-```plaintext
+```bash
 sdk-template/
 ├── sdk-core/                      # Core utilities and infrastructure
 │   └── src/main/kotlin/io/etip/sdk/core/
@@ -60,7 +60,7 @@ For example, in the **Pokémon API integration** included in the template, `Clie
 
 This is the implementation of the HttpClientFactory implementing the Basic auth strategy:
 
-```
+```kotlin
 object HttpClientFactory {
     fun create(username: String, password: String): HttpClient {
         return HttpClient(CIO) {
@@ -91,7 +91,7 @@ object HttpClientFactory {
 The SdkFactory during the initialization of the SDK will get the username and password to inject in the HttpClientFactory 
 via `create(username: String, password: String)` method:
 
-```
+```kotlin
 object SdkFactory {
     fun create(config: ClientConfig): ApiService {
         val client = HttpClientFactory.create(config.username, config.password)
