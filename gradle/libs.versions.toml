@@ -2,7 +2,7 @@
 junit-jupiter = "5.13.0"
 kotlin = "2.1.21"
 ktor = "3.1.2"
-coroutines = "1.7.3"
+coroutines = "1.10.2"
 serialization = "1.6.0"
 logback = "1.4.11"
 slf4j = "2.0.9"
