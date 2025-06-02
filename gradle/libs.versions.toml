@@ -1,5 +1,5 @@
 [versions]
-junit-jupiter = "5.11.0"
+junit-jupiter = "5.13.0"
 kotlin = "2.1.20"
 ktor = "3.1.2"
 coroutines = "1.7.3"
