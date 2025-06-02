@@ -1,17 +1,110 @@
 # Kotlin HTTP API Client Template
 
-### A project template for writing an HTTP API client using Kotlin.
+A modular, extensible, and reusable SDK template built with **Kotlin** and **Ktor**, designed to simplify the integration with external REST APIs. This template provides a clean separation between core HTTP functionality (`sdk-core`) and API-specific logic (`sdk-api`), following **SOLID principles**, **semantic versioning**, and best practices for SDK development.
 
-## Compatibility
-To keep the SDK compatible with Java, refer to the following docs from Kotlin:
-* [Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html)
-* [Mixing Java and Kotlin in one project](https://kotlinlang.org/docs/mixing-java-kotlin-intellij.html)
-* [Using Java records in Kotlin](https://kotlinlang.org/docs/jvm-records.html)
+## ✨ Features
+
+- 🔌 **Modular architecture** (`sdk-core`, `sdk-api`)
+- 🔄 Generic HTTP client with support for **GET** and **POST**
+- 🔐 Pluggable authentication (JWT, Basic Auth, or custom)
+- ✅ Built-in support for **error handling** and **response validation**
+- 📦 Easily publishable to GitHub Packages
+- 🚀 Ready-to-use SDK factory for simplified instantiation
+- 📘 Example integration using [PokéAPI](https://pokeapi.co)
+
+## 📁 Structure Overview
+
+```bash
+sdk-template/
+├── sdk-core/                      # Core utilities and infrastructure
+│   └── src/main/kotlin/io/etip/sdk/core/
+│       ├── BaseHttpClient.kt       # Generic HTTP client with GET/POST support
+│       ├── HttpClientFactory.kt    # Factory responsible for creating and configuring instances of `HttpClient`.
+│       ├── exceptions/             # Common SDK exceptions
+│       └── routes/                 # Sealed route definitions
+│
+├── sdk-api/                       # API-specific integrations
+│   └── src/main/kotlin/io/etip/sdk/api/
+│       ├── config/                 # ClientConfig, Environment enum
+│       ├── integration/            # ApiService interface and implementation
+│       └── factory/                # SdkFactory to instantiate the API client
+│
+├── examples/                      # Example usage of the SDK
+│   └── basic-example/             # Pokémon API usage demo
+│
+├── .github/workflows/             # CI/CD workflows for release
+│   └── release.yml
+│
+└── README.md                      # Project overview and usage guide
+```
+
+### 🔐 Authentication Strategy
+
+The SDK follows a flexible authentication strategy that separates concerns between `sdk-core` and `sdk-api`.
+
+#### In `sdk-core`
+
+Authentication must be configured at the `HttpClient` level and is agnostic to the specific authentication mechanism. Whether the integration requires **Basic Auth**, **JWT Bearer tokens**, or any other custom scheme, the core does **not** hard-code any implementation. Instead, it provides the infrastructure (like `BaseHttpClient`) to accept headers, allowing the `sdk-api` layer to inject credentials dynamically.
+
+You can also implement custom authenticators using a strategy pattern by defining an abstract `Authenticator` interface in `sdk-core`. The concrete implementation (e.g., `JwtAuthenticator`, `BasicAuthenticator`) would live in `sdk-api`.
+
+#### In `sdk-api`
+
+Each API integration defines its own `ClientConfig` class to pass the necessary authentication details (e.g., username/password or token), base URL, environment, and additional settings.
+
+A `SdkFactory` is used to initialize the SDK with these configurations, build the proper `HttpClient` through `HttpClientFactory`, and return an instance of the `ApiService`.
+
+For example, in the **Pokémon API integration** included in the template, `ClientConfig` receives only the base URL, and no authentication is applied. In a real-world integration, you'd adjust this to support the target API’s authentication scheme.
+
+#### Example of basic authentication using Ktor Auth library
+
+This is the implementation of the HttpClientFactory implementing the Basic auth strategy:
+
+```kotlin
+object HttpClientFactory {
+    fun create(username: String, password: String): HttpClient {
+        return HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.INFO
+            }
+
+            install(Auth) {
+                basic {
+                    credentials {
+                        BasicAuthCredentials(username = username, password = password)
+                    }
+                    sendWithoutRequest { true }
+                }
+            }
+        }
+    }
+}
+```
+
+The SdkFactory during the initialization of the SDK will get the username and password to inject in the HttpClientFactory 
+via `create(username: String, password: String)` method:
+
+```kotlin
+object SdkFactory {
+    fun create(config: ClientConfig): ApiService {
+        val client = HttpClientFactory.create(config.username, config.password)
+        val baseHttpClient = BaseHttpClient(client, config.baseUrl)
+        return DefaultApiService(baseHttpClient)
+    }
+}
+```
 
 License
 --------
 
-    Copyright 2024 eTip, Inc.
+    Copyright 2025 eTip, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
