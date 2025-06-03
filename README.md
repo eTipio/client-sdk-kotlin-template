@@ -5,7 +5,7 @@ A modular, extensible, and reusable SDK template built with **Kotlin** and **Kto
 ## ✨ Features
 
 - 🔌 **Modular architecture** (`sdk-core`, `sdk-api`)
-- 🔄 Generic HTTP client with support for **GET** and **POST**
+- 🔄 Generic HTTP client with support for **GET**, **POST**, **PUT**, and **DELETE**
 - 🔐 Pluggable authentication (JWT, Basic Auth, or custom)
 - ✅ Built-in support for **error handling** and **response validation**
 - 📦 Easily publishable to GitHub Packages
@@ -18,6 +18,7 @@ A modular, extensible, and reusable SDK template built with **Kotlin** and **Kto
 sdk-template/
 ├── sdk-core/                      # Core utilities and infrastructure
 │   └── src/main/kotlin/io/etip/sdk/core/
+│       ├── ApiConfig.kt            # Config necessary to be used by HttpClientFactory like logging enabler and timeouts
 │       ├── BaseHttpClient.kt       # Generic HTTP client with GET/POST support
 │       ├── HttpClientFactory.kt    # Factory responsible for creating and configuring instances of `HttpClient`.
 │       ├── exceptions/             # Common SDK exceptions
@@ -25,9 +26,10 @@ sdk-template/
 │
 ├── sdk-api/                       # API-specific integrations
 │   └── src/main/kotlin/io/etip/sdk/api/
-│       ├── config/                 # ClientConfig, Environment enum
+│       ├── config/                 # Contains config manager, provider, keys, factory, and properties API configurations
+│       ├── config/mock/            # MockConfigProvider - Can be used if there is no config provider configured
+│       ├── di/                     # ApiRegistry, AppModule
 │       ├── integration/            # ApiService interface and implementation
-│       └── factory/                # SdkFactory to instantiate the API client
 │
 ├── examples/                      # Example usage of the SDK
 │   └── basic-example/             # Pokémon API usage demo
@@ -38,49 +40,100 @@ sdk-template/
 └── README.md                      # Project overview and usage guide
 ```
 
+## 🏗️ SDK Initialization
+
+The SDK supports secure and environment-aware initialization using a factory method. Here’s how you initialize it in your application:
+
+```kotlin
+fun main() = runBlocking {
+    val logger = LoggerFactory.getLogger("Pokemon")
+    val dotenv = Dotenv.configure().ignoreIfMissing().load()
+
+    val pokemon = Pokemon.fromEnv()
+
+    val context = pokemon.getContext()
+    val secrets = pokemon.getSecrets()
+    val configs = pokemon.getConfigs()
+
+    val runMode = context["runMode"]
+
+    logger.info("Run mode: $runMode")
+
+    logger.info("------------------------CONFIG------------------------")
+    logger.info(configs.toString())
+    logger.info("------------------------SECRET------------------------")
+    logger.info(secrets.toString())
+    logger.info("------------------------CONTEXT------------------------")
+    logger.info(context.toString())
+    logger.info("------------------------ENV----------------------------")
+    logger.info(dotenv.entries().toString())
+    AppModule.init(Environment.STAGE)
+
+    val pokemonDetail = ApiRegistry.getApi<PokemonApiService>().getPokemonByName("pikachu")
+    println(pokemonDetail)
+}
+```
+
 ### 🔐 Authentication Strategy
 
-The SDK follows a flexible authentication strategy that separates concerns between `sdk-core` and `sdk-api`.
+#### In sdk-core
 
-#### In `sdk-core`
+The SDK uses Ktor’s flexible plugin system to support authentication through header injection. Authentication is not hard-coded in `sdk-core`-instead, it's configured through `ApiConfig`, which passes values like:
 
-Authentication must be configured at the `HttpClient` level and is agnostic to the specific authentication mechanism. Whether the integration requires **Basic Auth**, **JWT Bearer tokens**, or any other custom scheme, the core does **not** hard-code any implementation. Instead, it provides the infrastructure (like `BaseHttpClient`) to accept headers, allowing the `sdk-api` layer to inject credentials dynamically.
-
-You can also implement custom authenticators using a strategy pattern by defining an abstract `Authenticator` interface in `sdk-core`. The concrete implementation (e.g., `JwtAuthenticator`, `BasicAuthenticator`) would live in `sdk-api`.
+- username
+- password
+- baseUrl
+- enableLogging
+- timeoutMillis
 
 #### In `sdk-api`
 
-Each API integration defines its own `ClientConfig` class to pass the necessary authentication details (e.g., username/password or token), base URL, environment, and additional settings.
+Each integration provides a `ClientConfig` used to build a proper `ApiConfig`. The SDK is initialized using a configuration factory pattern (like `Pokemon.fromEnv()`), which retrieves configs and secrets dynamically and bootstraps everything needed.
 
-A `SdkFactory` is used to initialize the SDK with these configurations, build the proper `HttpClient` through `HttpClientFactory`, and return an instance of the `ApiService`.
-
-For example, in the **Pokémon API integration** included in the template, `ClientConfig` receives only the base URL, and no authentication is applied. In a real-world integration, you'd adjust this to support the target API’s authentication scheme.
-
-#### Example of basic authentication using Ktor Auth library
-
-This is the implementation of the HttpClientFactory implementing the Basic auth strategy:
+#### 🛠 Example of HttpClientFactory Implementation
 
 ```kotlin
 object HttpClientFactory {
-    fun create(username: String, password: String): HttpClient {
+    fun create(config: ApiConfig): HttpClient {
         return HttpClient(CIO) {
+            install(HttpTimeout) {
+                requestTimeoutMillis = config.timeoutMillis
+                connectTimeoutMillis = config.timeoutMillis
+            }
+
             install(ContentNegotiation) {
                 json(Json {
                     ignoreUnknownKeys = true
                 })
             }
 
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.INFO
-            }
-
             install(Auth) {
                 basic {
                     credentials {
-                        BasicAuthCredentials(username = username, password = password)
+                        BasicAuthCredentials(username = config.username, password = config.password)
                     }
                     sendWithoutRequest { true }
+                }
+            }
+
+            if (config.enableLogging) {
+                install(Logging) {
+                    logger = Logger.DEFAULT
+                    level = LogLevel.ALL
+                }
+            }
+
+            defaultRequest {
+                url(config.baseUrl)
+            }
+
+            HttpResponseValidator {
+                handleResponseExceptionWithRequest { cause, _ ->
+                    throw when (cause) {
+                        is ClientRequestException -> SdkException("Client error", cause)
+                        is ServerResponseException -> SdkException("Server error", cause)
+                        else -> SdkException("Unexpected error", cause)
+                    }
                 }
             }
         }
@@ -88,17 +141,20 @@ object HttpClientFactory {
 }
 ```
 
-The SdkFactory during the initialization of the SDK will get the username and password to inject in the HttpClientFactory 
-via `create(username: String, password: String)` method:
+#### 🔧 Configuration Source (PokemonConfiguration)
+
+The SDK can be configured using:
+
+- `.env` files (via [dotenv-kotlin](https://github.com/cdimascio/dotenv-kotlin))
+- Secrets management (e.g., AWS Secrets Manager or Vault)
+- Runtime context (e.g., environment variables)
+
+Example:
 
 ```kotlin
-object SdkFactory {
-    fun create(config: ClientConfig): ApiService {
-        val client = HttpClientFactory.create(config.username, config.password)
-        val baseHttpClient = BaseHttpClient(client, config.baseUrl)
-        return DefaultApiService(baseHttpClient)
-    }
-}
+val pokemon = Pokemon.fromEnv()
+val configs = pokemon.getConfigs()
+val secrets = pokemon.getSecrets()
 ```
 
 License
