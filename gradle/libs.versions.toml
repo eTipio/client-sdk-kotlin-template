@@ -6,7 +6,7 @@ coroutines = "1.7.3"
 serialization = "1.6.0"
 logback = "1.4.11"
 slf4j = "2.0.9"
-dotenv = "3.0.0"
+dotenv = "3.2.0"
 
 [libraries]
 # Individual dependencies
