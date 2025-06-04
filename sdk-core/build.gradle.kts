@@ -32,7 +32,7 @@ publishing {
             from(components["kotlin"])
 
             groupId = "io.etip"
-            artifactId = "client-sdk-kotlin-template"
+            artifactId = "sdk-template-kotlin"
             version = System.getenv("GITHUB_REF")?.substringAfterLast("/") ?: "local"
         }
     }
@@ -40,7 +40,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/eTipio/client-sdk-kotlin-template")
+            url = uri("https://maven.pkg.github.com/eTipio/sdk-template-kotlin")
             credentials {
                 username = project.findProperty("release.user") as String? ?: System.getenv("USERNAME")
                 password = project.findProperty("release.key") as String? ?: System.getenv("TOKEN")
