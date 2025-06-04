@@ -6,8 +6,12 @@ coroutines = "1.7.3"
 serialization = "1.6.0"
 logback = "1.4.11"
 slf4j = "2.0.9"
+dotenv = "3.0.0"
 
 [libraries]
+# Individual dependencies
+dotenv-java = { module = "io.github.cdimascio:dotenv-java", version.ref = "dotenv" }
+
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
