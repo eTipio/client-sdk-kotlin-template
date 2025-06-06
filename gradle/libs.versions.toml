@@ -7,6 +7,7 @@ serialization = "1.6.0"
 logback = "1.4.11"
 slf4j = "2.0.9"
 dotenv = "3.0.0"
+kotlinter = "5.1.0"
 
 [libraries]
 # Individual dependencies
@@ -33,6 +34,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 [plugins]
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.20" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref="kotlin" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 
 [bundles]
 ktor = [

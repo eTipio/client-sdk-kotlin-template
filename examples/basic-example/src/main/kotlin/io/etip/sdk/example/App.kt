@@ -31,7 +31,7 @@ fun main() = runBlocking {
     logger.info(context.toString())
     logger.info("------------------------ENV----------------------------")
     logger.info(dotenv.entries().toString())
-    AppModule.init(Environment.STAGE)
+    AppModule.init(Environment.STAGING)
 
     val pokemonDetail = ApiRegistry.getApi<PokemonApiService>().getPokemonByName("pikachu")
     //val pokemonName = ApiRegistry.getApi<PokemonApiService>().getPokemonByName("pikachu")

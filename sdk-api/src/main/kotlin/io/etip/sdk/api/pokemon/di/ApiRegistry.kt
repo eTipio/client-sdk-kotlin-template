@@ -12,16 +12,17 @@ import kotlin.jvm.java
  * type and the value is the registered instance.
  */
 object ApiRegistry {
-
     private val services = mutableMapOf<Class<*>, Any>()
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : Any> getApi(clazz: Class<T>): T {
-        return services[clazz] as? T
+    fun <T : Any> getApi(clazz: Class<T>): T =
+        services[clazz] as? T
             ?: error("No API registered for class: ${clazz.simpleName}")
-    }
 
-    fun <T : Any> registerApi(clazz: Class<T>, instance: T) {
+    fun <T : Any> registerApi(
+        clazz: Class<T>,
+        instance: T,
+    ) {
         services[clazz] = instance
     }
 

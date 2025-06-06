@@ -2,8 +2,9 @@ package io.etip.sdk.api.pokemon.config
 
 import io.etip.sdk.api.pokemon.integration.exception.PokemonConfigurationException
 
-class PokemonConfigurationFactory(private val configProvider: ConfigProvider) {
-
+class PokemonConfigurationFactory(
+    private val configProvider: ConfigProvider,
+) {
     fun create(): PokemonProperties {
         val baseUrl = configProvider.baseUrl()
 
@@ -13,5 +14,4 @@ class PokemonConfigurationFactory(private val configProvider: ConfigProvider) {
 
         return PokemonProperties(baseUrl = baseUrl)
     }
-
 }
