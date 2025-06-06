@@ -6,9 +6,10 @@ class PokemonConfiguration(
     baseUrl: String,
     environment: Environment,
     enableLogging: Boolean = false,
-    timeoutMillis: Long = 30_000
-): ApiConfig(baseUrl, enableLogging, timeoutMillis)
+    timeoutMillis: Long = 30_000,
+) : ApiConfig(baseUrl, enableLogging, timeoutMillis)
 
 enum class Environment {
-    PROD, STAGE
+    PROD,
+    STAGING,
 }

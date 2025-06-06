@@ -10,15 +10,15 @@ import io.etip.sdk.core.BaseHttpClient
 import io.etip.sdk.core.HttpClientFactory
 
 object AppModule {
-
     fun init(environment: Environment) {
         val config = PokemonConfigurationFactory(MockConfigProvider).create()
-        val pokemonConfig = PokemonConfiguration(
-            baseUrl = config.baseUrl,
-            environment = environment,
-            enableLogging = true,
-            timeoutMillis = 30_000
-        )
+        val pokemonConfig =
+            PokemonConfiguration(
+                baseUrl = config.baseUrl,
+                environment = environment,
+                enableLogging = true,
+                timeoutMillis = 30_000,
+            )
 
         val client = HttpClientFactory.create(pokemonConfig)
         val baseHttpClient = BaseHttpClient(client)
@@ -26,5 +26,4 @@ object AppModule {
 
         ApiRegistry.registerApi(service)
     }
-
 }
