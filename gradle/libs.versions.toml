@@ -31,7 +31,7 @@ ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.7.3" }
 
 [plugins]
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.20" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.21" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref="kotlin" }
 
 [bundles]
