@@ -8,6 +8,7 @@ import io.etip.sdk.api.pokemon.integration.PokemonApiService
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
+
     val config = PokemonConfiguration(
         baseUrl = "https://pokeapi.co/",
         environment = Environment.STAGE,
@@ -16,6 +17,6 @@ fun main() = runBlocking {
     AppModule.init(config)
 
     val pokemonDetail = ApiRegistry.getApi<PokemonApiService>().getPokemonByName("pikachu")
-    //val pokemonName = ApiRegistry.getApi<PokemonApiService>().getPokemonByName("pikachu")
     println(pokemonDetail)
+    
 }

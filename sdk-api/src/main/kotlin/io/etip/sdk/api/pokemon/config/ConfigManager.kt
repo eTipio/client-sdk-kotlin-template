@@ -3,10 +3,11 @@ package io.etip.sdk.api.pokemon.config
 import io.github.cdimascio.dotenv.Dotenv
 
 object ConfigManager {
-
-    private val dotenv = Dotenv.configure()
-        .ignoreIfMissing()
-        .load()
+    private val dotenv =
+        Dotenv
+            .configure()
+            .ignoreIfMissing()
+            .load()
 
     private val pokemon = Pokemon.Companion.fromEnv()
 
@@ -17,5 +18,4 @@ object ConfigManager {
     fun baseUrl(): String = configs[PokemonConfigKeys.BASE_URL].orEmpty()
 
     fun env(key: String): String? = dotenv[key]
-
 }

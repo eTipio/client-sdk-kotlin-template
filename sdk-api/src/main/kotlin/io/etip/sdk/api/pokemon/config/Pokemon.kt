@@ -9,7 +9,9 @@ class Pokemon {
     private val contextMap = mutableMapOf<String, String>()
 
     fun getConfigs(): Map<String, String> = configMap.toMap()
+
     fun getSecrets(): Map<String, String> = secretsMap.toMap()
+
     fun getContext(): Map<String, String> = contextMap.toMap()
 
     companion object {
@@ -29,9 +31,12 @@ class Pokemon {
             return pokemon
         }
 
-        private fun String.toCamelCase(): String {
-            return this.lowercase().split("_").joinToString("") { it.replaceFirstChar { char -> char.uppercaseChar() } }.replaceFirstChar { it.lowercase() }
-        }
+        private fun String.toCamelCase(): String =
+            this
+                .lowercase()
+                .split("_")
+                .joinToString("") {
+                    it.replaceFirstChar { char -> char.uppercaseChar() }
+                }.replaceFirstChar { it.lowercase() }
     }
-
 }

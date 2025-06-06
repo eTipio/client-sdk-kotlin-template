@@ -15,5 +15,5 @@ object AppModule {
 
         ApiRegistry.registerApi(service)
     }
-
+    
 }

@@ -1,0 +1,30 @@
+name: Lint Kotlin
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [develop]
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - src/**/*.kt
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: corretto
+
+      - name: Lint Kotlin
+        run: ./gradlew clean lintKotlin
