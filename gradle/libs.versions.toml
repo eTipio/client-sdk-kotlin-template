@@ -28,7 +28,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 
 mockk = { module = "io.mockk:mockk", version = "1.13.8" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.7.3" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.2" }
 
 [plugins]
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.21" }
