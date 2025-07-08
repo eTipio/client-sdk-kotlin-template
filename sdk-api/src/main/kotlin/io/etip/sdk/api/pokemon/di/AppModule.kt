@@ -7,7 +7,6 @@ import io.etip.sdk.core.BaseHttpClient
 import io.etip.sdk.core.HttpClientFactory
 
 object AppModule {
-
     fun init(config: PokemonConfiguration) {
         val client = HttpClientFactory.create(config)
         val baseHttpClient = BaseHttpClient(client)
@@ -15,5 +14,4 @@ object AppModule {
 
         ApiRegistry.registerApi(service)
     }
-    
 }
