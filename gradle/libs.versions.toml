@@ -32,7 +32,7 @@ ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.2" }
 
 [plugins]
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.21" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.2.10" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref="kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 
