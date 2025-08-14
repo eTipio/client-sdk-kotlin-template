@@ -1,15 +1,9 @@
 package io.etip.sdk.api.pokemon.config
 
-import io.etip.sdk.core.ApiConfig
+import io.etip.sdk.core.http.HttpClientConfig
 
 class PokemonConfiguration(
     baseUrl: String,
-    environment: Environment,
-    enableLogging: Boolean = false,
+    enableLogging: Boolean = true,
     timeoutMillis: Long = 30_000,
-) : ApiConfig(baseUrl, enableLogging, timeoutMillis)
-
-enum class Environment {
-    PROD,
-    STAGING,
-}
+) : HttpClientConfig(baseUrl, enableLogging, timeoutMillis)

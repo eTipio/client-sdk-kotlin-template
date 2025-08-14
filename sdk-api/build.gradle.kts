@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.logging)
+    implementation(libs.bundles.koin)
 }
 
 kotlinter {

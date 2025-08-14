@@ -14,8 +14,9 @@ dependencies {
     implementation(libs.dotenv.java)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
 }
 
 application {
-    mainClass.set("io.etip.sdk.example.AppKt")
+    mainClass.set("io.etip.sdk.examples.pokemon.AppKt")
 }

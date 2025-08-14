@@ -1,6 +1,6 @@
-package io.etip.sdk.core
+package io.etip.sdk.core.http
 
-open class ApiConfig(
+open class HttpClientConfig(
     val baseUrl: String,
     val enableLogging: Boolean = false,
     val timeoutMillis: Long = 30_000

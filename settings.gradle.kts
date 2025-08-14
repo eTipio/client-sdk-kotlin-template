@@ -3,4 +3,4 @@ plugins {
 }
 
 rootProject.name = "sdk-template-kotlin"
-include("sdk-core", "sdk-api", "examples:basic-example")
+include("sdk-core", "sdk-api", "examples:basic-pokemon")

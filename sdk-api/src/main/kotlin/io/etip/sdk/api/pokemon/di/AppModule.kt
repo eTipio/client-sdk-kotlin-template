@@ -1,17 +1,23 @@
 package io.etip.sdk.api.pokemon.di
 
 import io.etip.sdk.api.pokemon.config.PokemonConfiguration
-import io.etip.sdk.api.pokemon.integration.PokemonApiService
-import io.etip.sdk.api.pokemon.integration.impl.DefaultPokemonApiService
-import io.etip.sdk.core.BaseHttpClient
-import io.etip.sdk.core.HttpClientFactory
+import io.etip.sdk.api.pokemon.integration.PokemonService
+import io.etip.sdk.api.pokemon.integration.impl.PokeApiService
+import io.etip.sdk.core.http.BaseHttpClient
+import io.etip.sdk.core.http.HttpClientFactory
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
 
 object AppModule {
     fun init(config: PokemonConfiguration) {
         val client = HttpClientFactory.create(config)
         val baseHttpClient = BaseHttpClient(client)
-        val service: PokemonApiService = DefaultPokemonApiService(baseHttpClient)
+        val service: PokemonService = PokeApiService(baseHttpClient)
 
-        ApiRegistry.registerApi(service)
+         startKoin {
+             modules(module {
+                 single<PokemonService> { service }
+             })
+         }
     }
 }

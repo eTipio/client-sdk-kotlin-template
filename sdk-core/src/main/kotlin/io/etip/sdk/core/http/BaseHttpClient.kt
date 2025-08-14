@@ -1,14 +1,10 @@
-package io.etip.sdk.core
+package io.etip.sdk.core.http
 
-import io.etip.sdk.core.exception.SdkException
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.header
-import io.ktor.client.request.request
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.contentType
+import io.etip.sdk.core.exception.UnexpectedException
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 
 open class BaseHttpClient(val client: HttpClient) {
 
@@ -62,7 +58,7 @@ open class BaseHttpClient(val client: HttpClient) {
                 }
             }.body()
         } catch (ex: Exception) {
-            throw SdkException("${method.value} request failed: ${ex.message}", ex)
+            throw UnexpectedException("${method.value} request failed: ${ex.message}", ex)
         }
     }
 
