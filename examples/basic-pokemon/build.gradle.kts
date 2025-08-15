@@ -18,5 +18,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("io.etip.sdk.examples.pokemon.mainKt")
+    mainClass.set("io.etip.sdk.examples.pokemon.MainKt")
 }

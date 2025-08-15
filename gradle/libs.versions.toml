@@ -1,6 +1,6 @@
 [versions]
 junit-jupiter = "5.13.1"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 ktor = "3.2.0"
 coroutines = "1.10.2"
 serialization = "1.8.1"
@@ -9,6 +9,7 @@ slf4j = "2.0.17"
 dotenv = "3.2.0"
 kotlinter = "5.1.1"
 koin = "4.1.0"
+mockk = "1.14.2"
 
 [libraries]
 # Individual dependencies
@@ -31,12 +32,12 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
-mockk = { module = "io.mockk:mockk", version = "1.14.2" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.2" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 [plugins]
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.21" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref="kotlin" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref="kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 
