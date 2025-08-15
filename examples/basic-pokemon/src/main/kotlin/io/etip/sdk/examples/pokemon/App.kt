@@ -3,17 +3,21 @@ package io.etip.sdk.examples.pokemon
 import io.etip.sdk.api.pokemon.config.PokemonConfiguration
 import io.etip.sdk.api.pokemon.di.AppModule
 import io.etip.sdk.api.pokemon.integration.PokemonService
-import kotlinx.coroutines.runBlocking
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-fun main() = runBlocking {
+object App : KoinComponent {
+    suspend fun run() {
+        val config = PokemonConfiguration(baseUrl = "https://pokeapi.co/")
+        AppModule.init(config)
 
-    val config = PokemonConfiguration(baseUrl = "https://pokeapi.co/")
-    AppModule.init(config)
+        val service: PokemonService by inject()
+        val pokemon = service.getByName("pikachu")
 
-    val service = inject<PokemonService>(PokemonService::class.java).value
-    val pokemon = service.getByName("pikachu")
+        println("Found pokemon Name : ${pokemon.name}, ID : ${pokemon.id}, Height : ${pokemon.height}, Weight : ${pokemon.weight}")
+    }
+}
 
-    println("Found pokemon Name : ${pokemon.name}, ID : ${pokemon.id}, Height : ${pokemon.height}, Weight : ${pokemon.weight}")
-    
+suspend fun main() {
+    App.run()
 }

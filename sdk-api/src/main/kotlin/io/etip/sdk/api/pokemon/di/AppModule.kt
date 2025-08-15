@@ -14,10 +14,12 @@ object AppModule {
         val baseHttpClient = BaseHttpClient(client)
         val service: PokemonService = PokeApiService(baseHttpClient)
 
-         startKoin {
-             modules(module {
-                 single<PokemonService> { service }
-             })
-         }
+        startKoin {
+            modules(
+                module {
+                    single<PokemonService> { service }
+                },
+            )
+        }
     }
 }

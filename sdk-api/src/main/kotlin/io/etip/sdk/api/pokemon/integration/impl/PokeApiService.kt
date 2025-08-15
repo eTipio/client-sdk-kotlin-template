@@ -7,11 +7,7 @@ import io.etip.sdk.core.http.BaseHttpClient
 class PokeApiService(
     private val httpClient: BaseHttpClient,
 ) : PokemonService {
-    override suspend fun getByName(name: String): Pokemon {
-        return httpClient.get("api/v2/pokemon/$name")
-    }
+    override suspend fun getByName(name: String): Pokemon = httpClient.get("api/v2/pokemon/$name")
 
-    override suspend fun getById(id: Int): Pokemon {
-        return httpClient.get("api/v2/pokemon/$id")
-    }
+    override suspend fun getById(id: Int): Pokemon = httpClient.get("api/v2/pokemon/$id")
 }
