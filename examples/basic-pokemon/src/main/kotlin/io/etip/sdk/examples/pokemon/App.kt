@@ -9,6 +9,8 @@ import org.koin.core.component.inject
 object App : KoinComponent {
     suspend fun run() {
         val config = PokemonConfiguration(baseUrl = "https://pokeapi.co/")
+        // assume service is used in many places, so we initialize it once
+        // and inject it where needed
         AppModule.init(config)
 
         val service: PokemonService by inject()
