@@ -1,7 +1,7 @@
 package io.etip.sdk.examples.pokemon
 
 import io.etip.sdk.api.pokemon.config.PokemonConfiguration
-import io.etip.sdk.api.pokemon.di.AppModule
+import io.etip.sdk.examples.pokemon.di.AppModule
 import io.etip.sdk.api.pokemon.integration.PokemonService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -16,8 +16,4 @@ object App : KoinComponent {
 
         println("Found pokemon Name : ${pokemon.name}, ID : ${pokemon.id}, Height : ${pokemon.height}, Weight : ${pokemon.weight}")
     }
-}
-
-suspend fun main() {
-    App.run()
 }

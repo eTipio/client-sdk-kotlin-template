@@ -1,4 +1,4 @@
-package io.etip.sdk.api.pokemon.di
+package io.etip.sdk.examples.pokemon.di
 
 import io.etip.sdk.api.pokemon.config.PokemonConfiguration
 import io.etip.sdk.api.pokemon.integration.PokemonService
